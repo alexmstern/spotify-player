@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions } from 'next-auth'
+import NextAuth, { JWT, NextAuthOptions } from 'next-auth'
 import SpotifyProvider from 'next-auth/providers/spotify'
 
 const authOptions: NextAuthOptions = {
@@ -8,12 +8,25 @@ const authOptions: NextAuthOptions = {
             clientSecret: process.env.SPOTIFY_CLIENT_SECRET!,
             authorization: {
                 url: 'https://accounts.spotify.com/authorize',
-                params: { scope: 'user-read-email' },
+                params: { scope: 'user-read-email' }
             }
         })
     ],
+    callbacks: {
+        async jwt({ token, account }) {
+            if (account) {
+                token.accessToken = account.access_token
+            }
+            return token
+        },
+        async session({ session, token }) {
+            session.accessToken = (token as JWT).accessToken
+            return session
+        }
+    },
     pages: {
-        signIn: '/login'
+        signIn: '/login',
+        error: '/login'
     }
 }
 

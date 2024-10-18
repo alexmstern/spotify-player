@@ -6,7 +6,7 @@ const Login = () => {
   return (
     <div className='flex items-center justify-center h-screen'>
       <button 
-        onClick={() => signIn("spotify", {callbackUrl: '/'})}
+        onClick={() => signIn('spotify', {callbackUrl: '/'})}
         className='p-3 bg-gray-100 rounded-full hover:bg-gray-200'
       >
         Login with Spotify
